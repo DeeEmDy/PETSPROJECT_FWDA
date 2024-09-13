@@ -11,6 +11,7 @@ using api.Dtos.UserDtos;
 
 namespace Api.Tests.Controllers
 {
+    //Comment to probe tests.
     public class UserControllerTests
     {
         private readonly UserController _controller; //Referencia al UserController que se desea testear.
