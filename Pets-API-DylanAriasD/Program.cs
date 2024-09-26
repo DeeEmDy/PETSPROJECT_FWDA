@@ -18,6 +18,14 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddControllers();
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        policy => policy.WithOrigins("http://localhost:4200") // Specify the Angular app URL
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 
@@ -55,6 +63,7 @@ app.MapGet("/weatherforecast", () =>
 
 //Mapear los controladores.
 app.MapControllers();
+app.UseCors("AllowAngularApp");
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
