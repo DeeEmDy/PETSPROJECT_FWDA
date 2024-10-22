@@ -32,20 +32,20 @@ namespace api.Controllers
             var petsDto = pets.Select(pet => pet.ToDto());
             return Ok(petsDto);
         }
-        
-        [HttpGet("{id}")] //Ejemplo prueba: http://localhost:5034/api/pet/1
 
-        //Método para obtener una mascota por en específico por su ID.
+        [HttpGet("{id}")]
         public async Task<IActionResult> getById([FromRoute] int id)
         {
-            var pet = await _context.Pets.Include(pet => pet.User).FirstOrDefaultAsync(p => p.Id == id);
+            var pet = await _context.Pets.FirstOrDefaultAsync(p => p.Id == id);
             if (pet == null)
             {
-                return NotFound();
+                // Devolver un mensaje personalizado cuando no se encuentra una mascota
+                return NotFound(new { message = $"No se ha encontrado una mascota con el ID: {id}" });
             }
-            return Ok(pet.ToDto()); //Devolver un 200 Ok y la información de la mascota convertida a DTO.
+            return Ok(pet.ToDto());
         }
-        
+
+
         //Método para crear una nueva mascota.
         [HttpPost] //Ejemplo prueba: http://localhost:5034/api/pet
         public async Task<IActionResult> Create([FromBody] CreatePetRequestDto petDto)
